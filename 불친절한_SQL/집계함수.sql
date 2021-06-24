@@ -182,3 +182,12 @@ select min(hiredate) keep (dense_rank first order by sal) as c1,
        max(hiredate) keep (dense_rank last order by sal) as c4
 from emp
 where deptno = 20;
+
+-- 결합 연산자를 사용할 수도 있다.
+--숫자 값이 문자 값으로 변환되기 때문에 자릿수가 다른 sal 값을 비교하기 위해 lpad함수를 사용해야한다.
+-- 위 쿼리의 c2,c3열은 아래 기법을 사용할 수 없다.
+-- 결합연산자보다 keep절을 사용하는 편이 바람직 하다
+select substr(min(lpad(sal, 4, '0') || to_char(hiredate, 'YYYYMMDD')),5) as c1,
+       substr(max(lpad(sal, 4, '0') || to_char(hiredate, 'YYYYMMDD')),5) as c4
+from EMP
+where deptno = 20;
